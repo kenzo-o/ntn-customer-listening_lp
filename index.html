@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Listening — noises to notes | Diagnóstico de jornada com dados reais</title>
+  <meta name="description" content="Centenas de reviews reais de cliente viram diagnóstico de jornada com benchmark de mercado. Projeto fechado em semanas — sem plataforma, sem assinatura.">
+  <meta name="keywords" content="customer listening, diagnóstico de jornada, jornada do cliente, mapeamento de jornada, fricções de jornada, dados qualitativos, benchmark de experiência, social listening Brasil">
+  <meta property="og:title" content="Customer Listening — noises to notes">
+  <meta property="og:description" content="Centenas de reviews reais viram diagnóstico de jornada com benchmark de mercado. Projeto fechado em semanas.">
+  <meta property="og:image" content="https://noisestonotes.com/og-customer-listening.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --brand:     #041F1E;
+      --teal:      #1D9E75;
+      --teal-50:   #E1F5EE;
+      --teal-100:  #9FE1CB;
+      --teal-700:  #0F6E56;
+      --yellow:    #EF9F27;
+      --yel-50:    #FAEEDA;
+      --yel-700:   #854F0B;
+      --red:       #E24B4A;
+      --red-50:    #FCEBEB;
+      --red-700:   #A32D2D;
+      --blue:      #3A7BD5;
+      --blue-50:   #EEF4FB;
+      --grape:     #6C63B6;
+      --grape-50:  #EEEDF9;
+      --ink:       #2C2C2A;
+      --ink-50:    #FAF9F5;
+      --ink-100:   #D3D1C7;
+      --mist:      #F1EFE8;
+      --silver:    #B4B2A9;
+      --slate:     #888780;
+      --fog:       #5F5E5A;
+      --font-heading: 'DM Serif Display', Georgia, serif;
+      --font-body:    'Noto Sans', system-ui, sans-serif;
+      --radius:    12px;
+      --shadow-sm: 0 1px 2px rgba(4,31,30,.06), 0 2px 6px rgba(4,31,30,.06);
+      --shadow-md: 0 4px 12px rgba(4,31,30,.10), 0 2px 4px rgba(4,31,30,.06);
+      --shadow-lg: 0 8px 32px rgba(4,31,30,.14), 0 2px 8px rgba(4,31,30,.08);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--mist);
+      overflow-x: hidden;
+    }
+
+    /* ══ NAV ══ */
+    .nav-wrapper {
+      position: fixed; top: 12px; left: 0; right: 0;
+      z-index: 200; padding: 0 20px; pointer-events: none;
+    }
+    .page-nav {
+      max-width: 1080px; margin: 0 auto;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--ink-100); border-radius: var(--radius);
+      box-shadow: var(--shadow-md); padding: 0 24px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      pointer-events: all; transition: box-shadow 0.25s, background 0.25s;
+    }
+    .page-nav.scrolled { background: rgba(255,255,255,0.98); box-shadow: var(--shadow-lg); }
+    .nav-logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-icon { width: 30px; height: 30px; border-radius: 6px; overflow: hidden; flex-shrink: 0; }
+    .nav-logo-text { font-family: var(--font-heading); font-size: 16px; color: var(--ink); }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--fog); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:not(.nav-cta) { position: relative; padding-bottom: 2px; }
+    .nav-links a:not(.nav-cta)::after {
+      content: ''; position: absolute; bottom: -5px; left: 50%;
+      transform: translateX(-50%) scale(0); transform-origin: center;
+      width: 4px; height: 4px; border-radius: 50%; background: var(--teal);
+      transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
+      opacity: 0;
+    }
+    .nav-links a.active { color: var(--ink); }
+    .nav-links a:not(.nav-cta).active::after { transform: translateX(-50%) scale(1); opacity: 1; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta { background: var(--ink) !important; color: white !important; padding: 7px 16px; border-radius: 7px; font-weight: 600 !important; }
+    .nav-cta:hover { background: var(--teal) !important; }
+
+    /* ══ BUTTONS ══ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      transition: all 0.18s; line-height: 1.2; text-decoration: none; white-space: nowrap;
+    }
+    .btn-primary { background: var(--teal); color: white; }
+    .btn-primary:hover { background: var(--teal-700); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(29,158,117,.35); }
+    .btn-outline-white { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,.3); }
+    .btn-outline-white:hover { border-color: rgba(255,255,255,.65); background: rgba(255,255,255,.07); }
+    .btn-secondary { background: white; color: var(--ink); border: 1px solid var(--ink-100); }
+    .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ══ SHARED SECTION ══ */
+    .section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .section-headline { font-family: var(--font-heading); font-size: clamp(28px, 3vw, 44px); color: var(--ink); line-height: 1.12; margin-bottom: 16px; }
+    .section-lead { font-size: 17px; color: var(--slate); max-width: 600px; line-height: 1.65; margin-bottom: 48px; }
+    .sep { border: none; border-top: 1px solid var(--ink-100); max-width: 1080px; margin: 0 auto; }
+
+    /* ══ REVEAL ══ */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.18s; }
+    .reveal-delay-3 { transition-delay: 0.28s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ══ KEYFRAMES ══ */
+    @keyframes fade-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes grid-drift { from { transform: translateY(0); } to { transform: translateY(60px); } }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.7); } }
+    @keyframes scan-up {
+      0% { opacity: 0; transform: translateY(120vh); }
+      8% { opacity: 1; }
+      92% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-20vh); }
+    }
+    @keyframes line-pulse {
+      from { transform: translateY(-80px); }
+      to { transform: translateY(calc(100% + 80px)); }
+    }
+
+    /* ══ HERO ══ */
+    .hero {
+      background: var(--brand); color: white;
+      padding: 160px 40px 120px; position: relative; overflow: hidden;
+      min-height: 100vh; display: flex; align-items: center;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+      background-size: 64px 64px;
+      animation: grid-drift 28s linear infinite;
+      pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% -10%, rgba(29,158,117,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 80% 65%, rgba(29,158,117,.08) 0%, transparent 55%),
+        radial-gradient(ellipse 25% 30% at 8% 80%, rgba(29,158,117,.05) 0%, transparent 50%);
+    }
+    .hero-scan {
+      position: absolute; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(29,158,117,.18) 15%, rgba(29,158,117,.32) 50%, rgba(29,158,117,.18) 85%, transparent 100%);
+      animation: scan-up 10s linear infinite;
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 1080px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+    .hero-copy { max-width: 760px; }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--teal-100); margin-bottom: 28px;
+      opacity: 0; animation: fade-up .7s ease .1s forwards;
+    }
+    .hero-title {
+      font-family: var(--font-heading); font-size: clamp(38px, 5vw, 62px);
+      line-height: 1.09; color: white; margin-bottom: 24px;
+      opacity: 0; animation: fade-up .7s ease .25s forwards;
+    }
+    .hero-title em { font-style: normal; color: var(--teal-100); }
+    .hero-subtitle {
+      font-size: 17px; color: rgba(255,255,255,.58); max-width: 500px; line-height: 1.68;
+      margin-bottom: 40px; opacity: 0; animation: fade-up .7s ease .4s forwards;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; opacity: 0; animation: fade-up .7s ease .55s forwards; }
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0; animation: fade-in 1s ease 1.3s forwards;
+    }
+    .scroll-label { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.28); }
+    .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(255,255,255,.35), transparent); animation: pulse-dot 2.2s ease-in-out infinite; }
+
+    /* ══ PROBLEMA ══ */
+    .problema-wrap { padding: 96px 40px; }
+    .problema-inner { max-width: 1080px; margin: 0 auto; }
+    .problema-headline { font-family: var(--font-heading); font-size: clamp(30px, 3.8vw, 50px); line-height: 1.12; color: var(--ink); max-width: 720px; margin-bottom: 56px; }
+    .problema-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .problema-card { background: white; border-radius: var(--radius); border: 1px solid var(--ink-100); box-shadow: var(--shadow-sm); padding: 32px 28px; transition: transform 0.22s, box-shadow 0.22s; }
+    .problema-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+    .problema-num { font-family: var(--font-heading); font-size: 44px; color: var(--ink-100); line-height: 1; margin-bottom: 18px; }
+    .problema-title { font-family: var(--font-heading); font-size: 19px; color: var(--ink); margin-bottom: 12px; }
+    .problema-text { font-size: 14px; color: var(--slate); line-height: 1.65; }
+
+    /* ══ O QUE ENTREGAMOS ══ */
+    .entrega-wrap { background: var(--mist); }
+    .entrega-inner { max-width: 1080px; margin: 0 auto; padding: 96px 40px; }
+    .entrega-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 48px; align-items: start; }
+    .feature-list { list-style: none; }
+    .feature-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--ink-100); }
+    .feature-item:first-child { border-top: 1px solid var(--ink-100); }
+    .feature-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 6px; }
+    .feature-body { flex: 1; }
+    .feature-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .feature-desc { font-size: 13px; color: var(--slate); line-height: 1.6; }
+    .entrega-list-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); margin-bottom: 0; }
+    .diff-intro { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 16px; }
+    .diff-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .diff-box { border-radius: 10px; padding: 20px; }
+    .diff-box-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .diff-box-text { font-size: 13px; color: var(--fog); line-height: 1.55; }
+
+    /* ══ CASE ══ */
+    .case-wrap { background: white; border-top: 1px solid var(--ink-100); border-bottom: 1px solid var(--ink-100); padding: 96px 40px; }
+    .case-inner { max-width: 1080px; margin: 0 auto; }
+    .case-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .case-hl { font-family: var(--font-heading); font-size: clamp(26px, 3vw, 38px); color: var(--ink); line-height: 1.15; margin-bottom: 0; }
+    .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: start; margin-top: 48px; }
+    .case-context { font-size: 15px; color: var(--slate); line-height: 1.68; margin-bottom: 20px; }
+    .case-meta { font-size: 12px; color: var(--silver); margin-bottom: 32px; line-height: 2; }
+
+    .case-preview { background: var(--mist); border-radius: var(--radius); border: 1px solid var(--ink-100); padding: 20px; }
+    .preview-header { background: var(--brand); border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+    .preview-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.78); }
+    .preview-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; background: var(--teal); color: white; padding: 3px 8px; border-radius: 4px; }
+    .preview-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .preview-stat { background: white; border-radius: 8px; border: 1px solid var(--ink-100); padding: 12px 14px; }
+    .preview-stat-num { font-family: var(--font-heading); font-size: 22px; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+    .preview-stat-lbl { font-size: 10px; color: var(--silver); text-transform: uppercase; letter-spacing: .05em; line-height: 1.4; }
+    .preview-bars { background: white; border-radius: 8px; border: 1px solid var(--ink-100); padding: 16px; }
+    .preview-bars-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--slate); margin-bottom: 12px; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-name { font-size: 11px; color: var(--fog); width: 66px; flex-shrink: 0; line-height: 1.3; }
+    .bar-track { flex: 1; height: 6px; background: var(--mist); border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.1s cubic-bezier(.4,0,.2,1) .3s; }
+    .bar-val { font-size: 11px; font-weight: 600; color: var(--ink); width: 28px; text-align: right; }
+
+    /* ══ COMO FUNCIONA ══ */
+    .timeline-section { }
+    .timeline-inner { max-width: 1080px; margin: 0 auto; padding: 96px 40px; }
+    .timeline { margin-top: 48px; position: relative; }
+    .timeline-line { position: absolute; left: 27px; top: 48px; bottom: 48px; width: 1px; background: var(--ink-100); }
+    .timeline-step { display: flex; gap: 24px; align-items: flex-start; padding: 24px 0; }
+    .step-bubble { width: 54px; height: 54px; border-radius: 50%; background: white; border: 1px solid var(--ink-100); box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 19px; color: var(--ink); flex-shrink: 0; position: relative; z-index: 1; transition: all 0.2s; }
+    .timeline-step.highlight .step-bubble { background: var(--ink); color: white; border-color: var(--ink); }
+    .step-body { flex: 1; padding-top: 8px; }
+    .step-title { font-family: var(--font-heading); font-size: 22px; color: var(--ink); margin-bottom: 10px; }
+    .step-desc { font-size: 15px; color: var(--slate); line-height: 1.65; }
+    .step-callout { margin-top: 14px; background: var(--ink-50); border: 1px solid var(--ink-100); border-radius: 10px; padding: 16px 20px; font-size: 14px; color: var(--fog); line-height: 1.62; }
+
+    /* ══ DIFERENCIAIS ══ */
+    .diff-section { }
+    .diff-section-inner { max-width: 1080px; margin: 0 auto; padding: 96px 40px; }
+    .diff-blocks-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+    .diff-blocks-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
+    .diff-block { padding: 32px 28px; background: white; border-radius: var(--radius); border: 1px solid var(--ink-100); box-shadow: var(--shadow-sm); }
+    .diff-block.featured { background: var(--teal-50); border-color: rgba(29,158,117,.25); }
+    .diff-block-title { font-family: var(--font-heading); font-size: 19px; color: var(--ink); margin-bottom: 12px; line-height: 1.2; }
+    .diff-block-text { font-size: 14px; color: var(--slate); line-height: 1.65; }
+    .diff-block.featured .diff-block-text { color: var(--fog); }
+
+    .comp-table-wrap { margin-top: 56px; }
+    .comp-table-label { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--slate); margin-bottom: 16px; }
+    .comp-table { border-radius: var(--radius); border: 1px solid var(--ink-100); overflow: hidden; background: white; }
+    .comp-head { display: grid; grid-template-columns: 190px 1fr 1fr 1fr; background: var(--ink-50); border-bottom: 1px solid var(--ink-100); }
+    .comp-hcell { padding: 13px 16px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--slate); border-right: 1px solid var(--ink-100); }
+    .comp-hcell:last-child { border-right: none; color: var(--teal-700); background: var(--teal-50); }
+    .comp-row { display: grid; grid-template-columns: 190px 1fr 1fr 1fr; border-bottom: 1px solid var(--ink-100); }
+    .comp-row:last-child { border-bottom: none; }
+    .comp-cell { padding: 13px 16px; font-size: 13px; color: var(--slate); border-right: 1px solid var(--ink-100); line-height: 1.5; }
+    .comp-cell:last-child { border-right: none; background: rgba(225,245,238,.25); color: var(--teal-700); }
+    .comp-cell.lbl { font-weight: 600; color: var(--ink); font-size: 12px; }
+    .check { color: var(--teal); font-weight: 700; }
+    .nope { color: var(--silver); }
+
+    /* ══ SERVIÇOS ══ */
+    .services-wrap { background: var(--brand); padding: 96px 40px; position: relative; overflow: hidden; }
+    .services-inner { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+    .services-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-100); margin-bottom: 14px; }
+    .services-hl { font-family: var(--font-heading); font-size: clamp(28px, 3vw, 40px); color: white; margin-bottom: 10px; }
+    .services-lead { font-size: 15px; color: rgba(255,255,255,.48); margin-bottom: 40px; max-width: 560px; }
+    .svc-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+    .svc-tab { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.55); padding: 8px 18px; border-radius: 8px; font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .svc-tab:hover { background: rgba(255,255,255,.13); color: white; }
+    .svc-tab.active { background: var(--teal); border-color: var(--teal); color: white; }
+    .svc-panels-wrap { display: grid; }
+    .svc-panel { grid-area: 1 / 1; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.22s; }
+    .svc-panel.active { opacity: 1; visibility: visible; pointer-events: all; }
+    .svc-main { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09); border-radius: var(--radius); padding: 32px; }
+    .svc-tag { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal-100); margin-bottom: 10px; }
+    .svc-name { font-family: var(--font-heading); font-size: 26px; color: white; margin-bottom: 6px; }
+    .svc-sub { font-size: 13px; color: rgba(255,255,255,.4); font-style: italic; margin-bottom: 18px; }
+    .svc-desc { font-size: 14px; color: rgba(255,255,255,.68); line-height: 1.65; }
+    .svc-desc + .svc-desc { margin-top: 12px; }
+    .svc-side { display: flex; flex-direction: column; gap: 14px; }
+    .svc-detail { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 20px; }
+    .svc-detail:first-child { flex: 1; }
+    .svc-detail-lbl { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 10px; }
+    .svc-item { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: rgba(255,255,255,.68); margin-bottom: 7px; line-height: 1.45; }
+    .svc-item:last-child { margin-bottom: 0; }
+    .svc-check { color: var(--teal); flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+    .svc-prazo { font-size: 14px; color: var(--teal-100); font-weight: 600; }
+    .fontes-block { margin-top: 20px; background: rgba(255,255,255,.04); border: 1px solid rgba(29,158,117,.25); border-radius: var(--radius); padding: 24px 28px; }
+    .fontes-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal-100); margin-bottom: 10px; }
+    .fontes-title { font-family: var(--font-heading); font-size: 18px; color: white; margin-bottom: 8px; }
+    .fontes-text { font-size: 14px; color: rgba(255,255,255,.58); line-height: 1.65; }
+    .svc-note { font-size: 12px; color: rgba(255,255,255,.3); margin-top: 24px; }
+
+    /* ══ PARA QUEM ══ */
+    .aud-wrap { padding: 96px 40px; }
+    .aud-inner { max-width: 1080px; margin: 0 auto; }
+    .aud-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+    .aud-card { background: white; border-radius: var(--radius); border: 1px solid var(--ink-100); box-shadow: var(--shadow-sm); padding: 32px; transition: transform 0.22s, box-shadow 0.22s; }
+    .aud-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+    .aud-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--mist); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--teal); }
+    .aud-title { font-family: var(--font-heading); font-size: 20px; color: var(--ink); margin-bottom: 12px; }
+    .aud-text { font-size: 14px; color: var(--slate); line-height: 1.65; }
+
+    /* ══ CTA FINAL ══ */
+    .cta-wrap { background: var(--brand); padding: 120px 40px; text-align: center; position: relative; overflow: hidden; }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-100); margin-bottom: 20px; }
+    .cta-title { font-family: var(--font-heading); font-size: clamp(30px, 4vw, 50px); color: white; max-width: 620px; margin: 0 auto 18px; line-height: 1.15; }
+    .cta-sub { font-size: 17px; color: rgba(255,255,255,.5); max-width: 460px; margin: 0 auto 40px; line-height: 1.65; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .cta-note { font-size: 12px; color: rgba(255,255,255,.28); letter-spacing: .04em; }
+
+    /* ══ FOOTER ══ */
+    .page-footer { background: var(--brand); border-top: 1px solid rgba(255,255,255,.06); padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .footer-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .footer-logo-icon { width: 26px; height: 26px; border-radius: 5px; overflow: hidden; opacity: .65; }
+    .footer-name { font-family: var(--font-heading); font-size: 15px; color: rgba(255,255,255,.75); }
+    .footer-desc { font-size: 11px; color: rgba(255,255,255,.3); margin-top: 2px; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,.3); text-decoration: none; transition: color .15s; }
+    .footer-links a:hover { color: rgba(255,255,255,.7); }
+
+    /* ══ STEPPER (Como funciona) ══ */
+    .stepper { margin-top: 32px; }
+    .stepper-steps {
+      display: flex; align-items: flex-start;
+      position: relative; padding-bottom: 0;
+    }
+    .stepper-track {
+      position: absolute; top: 21px; left: 10%; right: 10%;
+      height: 1px; background: var(--ink-100); z-index: 0; pointer-events: none;
+    }
+    .stepper-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      background: none; border: none; cursor: pointer; padding: 0;
+      position: relative; z-index: 1; flex: 1;
+      transition: opacity 0.15s;
+    }
+    .stepper-btn:hover .stepper-num { border-color: var(--ink); }
+    .stepper-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: white; border: 1px solid var(--ink-100); box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading); font-size: 18px; color: var(--fog);
+      transition: background 0.22s cubic-bezier(0.16,1,0.3,1),
+                  color 0.22s, border-color 0.22s, box-shadow 0.22s;
+    }
+    .stepper-label {
+      font-size: 12px; font-weight: 500; color: var(--slate);
+      transition: color 0.2s; text-align: center; line-height: 1.3;
+    }
+    .stepper-btn.active .stepper-num {
+      background: var(--ink); color: white; border-color: var(--ink); box-shadow: var(--shadow-md);
+    }
+    .stepper-btn.active .stepper-label { color: var(--ink); font-weight: 600; }
+    .stepper-btn:focus-visible .stepper-num { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+    .stepper-panels { margin-top: 28px; border-top: 1px solid var(--ink-100); }
+    .stepper-panel { display: none; padding: 32px 0 0; }
+    .stepper-panel.active { display: block; animation: panel-in 0.22s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes panel-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .stepper-title { font-family: var(--font-heading); font-size: 22px; color: var(--ink); margin-bottom: 12px; }
+    .stepper-desc { font-size: 15px; color: var(--slate); line-height: 1.65; max-width: 680px; }
+    .stepper-callout {
+      margin-top: 14px; background: var(--ink-50); border: 1px solid var(--ink-100);
+      border-radius: 10px; padding: 16px 20px;
+      font-size: 14px; color: var(--fog); line-height: 1.62; max-width: 680px;
+    }
+
+    /* ══ DIFF LIST (Por que é diferente) ══ */
+    .diff-list { margin-top: 20px; }
+    .diff-list-item {
+      display: flex; align-items: baseline; gap: 24px;
+      padding: 20px 0; border-top: 1px solid var(--ink-100);
+    }
+    .diff-list-item:last-child { border-bottom: 1px solid var(--ink-100); }
+    .diff-list-stat {
+      font-family: var(--font-heading); font-size: 20px; color: var(--ink);
+      min-width: 110px; flex-shrink: 0; line-height: 1.1;
+    }
+    .diff-list-body { flex: 1; }
+    .diff-list-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 3px; display: block; }
+    .diff-list-desc { font-size: 13px; color: var(--slate); line-height: 1.6; margin: 0; }
+
+    /* ══ TEXT WRAP — widows e órfãs ══ */
+    h1, h2, h3, h4,
+    .hero-title, .problema-headline, .section-headline,
+    .case-hl, .step-title, .diff-block-title, .aud-title,
+    .svc-name, .fontes-title, .services-hl, .cta-title {
+      text-wrap: balance;
+    }
+    p, .section-lead, .hero-subtitle, .problema-text,
+    .case-context, .step-desc, .step-callout, .diff-block-text,
+    .aud-text, .svc-desc, .fontes-text, .cta-sub, .services-lead {
+      text-wrap: pretty;
+    }
+
+    /* ══ CANVAS + NOISE ══ */
+    #hero-canvas, #cta-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+    .hero-noise {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+      background-size: 200px 200px; opacity: 0.055; mix-blend-mode: screen;
+    }
+
+    /* ══ TIMELINE PULSE ══ */
+    .timeline-line { overflow: hidden; }
+    .timeline-line::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 80px;
+      background: linear-gradient(to bottom, transparent, rgba(29,158,117,.65) 50%, transparent);
+      animation: line-pulse 3s cubic-bezier(0.22,1,0.36,1) infinite;
+      will-change: transform;
+    }
+
+    /* ══ REDUCED MOTION ══ */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { transition: none !important; opacity: 1; transform: none; }
+      .hero-eyebrow, .hero-title, .hero-subtitle, .hero-actions, .hero-scroll { animation: none !important; opacity: 1; }
+      .hero-grid, .hero-scan, .scroll-line { animation: none !important; }
+      .timeline-line::after { animation: none !important; }
+      #hero-canvas { display: none; }
+    }
+
+    /* ══ RESPONSIVE ══ */
+    /* ══ MOBILE NAV ══ */
+    .nav-hamburger {
+      display: none; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      background: none; border: none; cursor: pointer;
+      padding: 8px; width: 40px; height: 40px;
+    }
+    .nav-hamburger span {
+      display: block; width: 18px; height: 1.5px;
+      background: var(--silver); border-radius: 2px;
+      transition: transform 0.22s cubic-bezier(0.16,1,0.3,1), opacity 0.2s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+    .nav-mobile {
+      display: none; flex-direction: column; gap: 4px;
+      position: fixed; top: 76px; left: 12px; right: 12px;
+      background: rgba(255,255,255,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--ink-100); border-radius: var(--radius);
+      box-shadow: var(--shadow-lg); padding: 12px; z-index: 199;
+      animation: panel-in 0.2s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-size: 15px; font-weight: 500; color: var(--fog);
+      text-decoration: none; padding: 12px 16px; border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-mobile a:hover { background: var(--mist); color: var(--ink); }
+    .nav-mobile .nav-mobile-cta {
+      background: var(--ink); color: white !important; font-weight: 600;
+      text-align: center; margin-top: 4px;
+    }
+    .nav-mobile .nav-mobile-cta:hover { background: var(--teal) !important; }
+
+    @media (max-width: 768px) {
+      .nav-wrapper { padding: 0 12px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero { padding: 120px 24px 80px; min-height: auto; }
+      .hero-scroll { display: none; }
+      .case-grid { gap: 32px; }
+      .problema-wrap { padding: 64px 24px; }
+      .problema-grid { grid-template-columns: 1fr; }
+      .entrega-inner { padding: 64px 24px; }
+      .entrega-grid { grid-template-columns: 1fr; gap: 40px; }
+      .diff-boxes { grid-template-columns: 1fr; }
+      .case-wrap { padding: 64px 24px; }
+      .case-grid { grid-template-columns: 1fr; gap: 36px; }
+      .timeline-inner { padding: 64px 24px; }
+      .stepper-label { display: none; }
+      .stepper-num { width: 36px; height: 36px; font-size: 16px; }
+      .stepper-track { top: 17px; }
+      .diff-list-item { flex-direction: column; gap: 4px; }
+      .diff-list-stat { min-width: auto; font-size: 17px; }
+      .diff-section-inner { padding: 64px 24px; }
+      .diff-blocks-3 { grid-template-columns: 1fr; }
+      .diff-blocks-2 { grid-template-columns: 1fr; }
+      .comp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .comp-table { min-width: 520px; }
+      .comp-head, .comp-row { grid-template-columns: 140px 1fr 1fr 1fr; }
+      .services-wrap { padding: 64px 24px; }
+      .svc-panel.active { grid-template-columns: 1fr; }
+      .aud-wrap { padding: 64px 24px; }
+      .aud-grid { grid-template-columns: 1fr; }
+      .cta-wrap { padding: 80px 24px; }
+      .page-footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .preview-stats { grid-template-columns: 1fr 1fr; }
+      .hero-title { font-size: clamp(32px, 8vw, 44px); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<div class="nav-wrapper">
+  <nav class="page-nav" id="page-nav">
+    <a href="#hero" class="nav-logo-wrap" aria-label="noises to notes — início">
+      <div class="nav-logo-icon">
+        <svg width="30" height="30" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="500" height="500" rx="50" fill="#041F1E"/>
+          <path d="M88.659 332.751C86.753 332.751 84.2513 331.917 81.1541 330.249C78.2951 328.82 75.436 326.794 72.577 324.174C69.9563 321.315 68.0503 318.098 66.859 314.524C65.6678 310.951 65.906 307.139 67.5738 303.088L103.669 213.387C106.051 207.431 104.979 204.452 100.452 204.452C98.7846 204.452 96.283 204.572 92.9475 204.81C89.8502 205.048 86.3956 206.12 82.5836 208.026C78.7716 209.694 75.0787 212.672 71.5049 216.961C70.5519 218.152 69.1224 218.748 67.2164 218.748C65.3104 218.509 64.2383 217.318 64 215.174C64 213.506 64.7148 211.243 66.1443 208.384C67.812 205.525 69.718 202.666 71.8623 199.807C74.2448 196.709 76.2699 194.446 77.9377 193.016C83.6557 187.537 90.565 182.891 98.6655 179.079C106.766 175.028 116.415 173.003 127.613 173.003C133.569 173.003 138.096 174.552 141.193 177.649C144.529 180.747 146.554 184.678 147.269 189.443C147.983 193.969 147.388 198.734 145.482 203.738L126.541 250.554C125.826 252.222 126.422 253.175 128.328 253.413C130.472 253.651 132.021 253.056 132.974 251.626C141.551 236.616 150.009 223.274 158.347 211.6C166.686 199.687 175.263 190.277 184.079 183.367C193.132 176.458 202.662 173.003 212.669 173.003C221.96 173.003 228.631 175.624 232.682 180.866C236.97 186.107 239.234 192.54 239.472 200.164C239.71 207.55 238.281 214.697 235.183 221.607L208.38 284.862C205.283 292.248 205.759 295.941 209.81 295.941C211.239 295.941 213.264 295.226 215.885 293.797C218.506 292.367 221.246 290.699 224.105 288.793C226.964 286.649 229.584 284.624 231.967 282.718C234.588 280.574 236.494 278.906 237.685 277.715C238.876 276.523 240.068 275.332 241.259 274.141C242.688 272.95 243.76 272.354 244.475 272.354C245.19 272.354 245.905 272.831 246.619 273.784C247.572 274.498 248.049 275.451 248.049 276.643C248.049 281.408 246.5 285.696 243.403 289.508C236.255 297.847 228.274 305.352 219.459 312.023C210.882 318.456 201.947 323.578 192.656 327.39C183.364 330.964 174.548 332.751 166.21 332.751C163.112 332.751 159.896 331.679 156.561 329.534C153.463 327.628 151.081 325.246 149.413 322.387C147.983 319.528 147.864 316.55 149.056 313.452C156.918 296.06 165.018 278.906 173.357 261.99C181.696 244.836 189.201 227.325 195.872 209.456C197.54 205.167 198.135 201.951 197.659 199.807C197.182 197.424 195.634 196.233 193.013 196.233C189.916 196.233 186.461 198.139 182.649 201.951C179.075 205.763 175.263 210.528 171.213 216.246C167.163 221.964 162.993 227.92 158.705 234.115C156.561 236.974 153.582 241.501 149.77 247.695C145.958 253.651 141.789 260.322 137.262 267.708C132.735 275.094 128.209 282.599 123.682 290.223C119.393 297.609 115.581 304.161 112.246 309.879C108.434 316.311 104.622 321.791 100.81 326.318C96.9978 330.606 92.9475 332.751 88.659 332.751Z" fill="#F5F5F5"/>
+          <path d="M255.453 328.819C253.785 328.819 252.117 328.462 250.449 327.747C249.02 326.794 248.305 325.484 248.305 323.816C248.305 321.91 249.139 320.481 250.807 319.528C252.475 318.336 254.381 317.383 256.525 316.669C260.099 315.477 263.196 314.167 265.817 312.737C268.676 311.07 270.105 307.853 270.105 303.088V221.249C270.105 216.008 269.271 211.6 267.604 208.026C266.174 204.452 263.315 202.189 259.026 201.236C258.073 200.998 257.12 200.402 256.167 199.449C255.453 198.496 255.095 196.948 255.095 194.803C255.095 191.468 256.287 189.443 258.669 188.728C266.77 186.822 275.585 184.32 285.115 181.223C294.883 177.887 303.222 174.433 310.131 170.859C311.084 170.383 312.156 169.787 313.348 169.072C314.539 168.357 315.611 168 316.564 168C317.994 168 318.827 168.477 319.066 169.43C319.542 170.144 319.78 171.097 319.78 172.289C319.78 174.195 319.423 177.292 318.708 181.58C318.232 185.631 317.994 189.323 317.994 192.659C317.994 193.612 317.994 194.684 317.994 195.875C318.232 197.067 318.47 197.781 318.708 198.02C326.809 190.157 335.029 184.082 343.367 179.793C351.706 175.505 361.355 173.361 372.315 173.361C384.704 173.361 395.068 178.007 403.407 187.298C411.984 196.352 416.272 208.741 416.272 224.465V303.088C416.272 307.853 417.583 311.07 420.203 312.737C423.062 314.167 426.279 315.477 429.852 316.669C431.758 317.383 433.426 318.336 434.856 319.528C436.285 320.481 437 321.91 437 323.816C437 325.484 436.285 326.794 434.856 327.747C433.664 328.462 432.354 328.819 430.925 328.819C426.16 328.819 421.633 328.581 417.344 328.105C413.294 327.866 409.244 327.628 405.193 327.39C401.381 327.152 397.331 327.033 393.043 327.033C388.992 327.033 384.942 327.152 380.892 327.39C376.842 327.628 372.791 327.866 368.741 328.105C364.691 328.581 360.283 328.819 355.518 328.819C354.089 328.819 352.659 328.462 351.23 327.747C350.038 326.794 349.443 325.484 349.443 323.816C349.443 321.91 350.157 320.481 351.587 319.528C353.016 318.336 354.684 317.383 356.59 316.669C360.164 315.477 363.142 314.167 365.525 312.737C367.907 311.07 369.098 307.853 369.098 303.088V231.97C369.098 222.917 366.954 215.888 362.666 210.885C358.615 205.644 353.136 202.904 346.226 202.666C340.985 202.666 336.339 203.499 332.289 205.167C328.238 206.835 324.069 209.098 319.78 211.957C318.827 212.91 318.113 213.982 317.636 215.174C317.16 216.365 316.921 217.556 316.921 218.747V303.088C316.921 307.853 318.232 311.07 320.853 312.737C323.473 314.167 326.452 315.477 329.787 316.669C334.552 318.098 336.935 320.481 336.935 323.816C336.935 325.246 336.339 326.437 335.148 327.39C333.956 328.343 332.527 328.819 330.859 328.819C326.094 328.819 321.686 328.581 317.636 328.105C313.586 327.866 309.774 327.628 306.2 327.39C302.626 327.152 298.695 327.033 294.407 327.033C290.356 327.033 286.187 327.152 281.899 327.39C277.848 327.628 273.56 327.866 269.033 328.105C264.744 328.581 260.218 328.819 255.453 328.819Z" fill="#F5F5F5"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">noises to notes</span>
+    </a>
+    <div class="nav-links" role="navigation" aria-label="Menu principal">
+      <a href="#problema">Problema</a>
+      <a href="#case">Case</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#contato" class="nav-cta">Conversar →</a>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</div>
+
+<nav class="nav-mobile" id="nav-mobile" aria-hidden="true" aria-label="Menu mobile">
+  <a href="#problema">Problema</a>
+  <a href="#case">Case</a>
+  <a href="#como-funciona">Como funciona</a>
+  <a href="#servicos">Serviços</a>
+  <a href="#contato" class="nav-mobile-cta">Conversar →</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="hero" aria-label="Apresentação">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-noise" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-scan" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">Customer Listening · noises to notes</p>
+      <h1 class="hero-title">
+        Centenas de interações reais de cliente. Estruturadas em <em>diagnóstico&nbsp;de&nbsp;jornada</em>. Em&nbsp;semanas.
+      </h1>
+      <p class="hero-subtitle">
+        Reclame Aqui, Google Maps, redes sociais, fontes proprietárias — qualquer dado qualitativo não estruturado vira mapa de fricções, padrões de dor e benchmark de mercado. Sem montar operação. Sem plataforma. Projeto&nbsp;fechado.
+      </p>
+      <div class="hero-actions">
+        <a href="./report.html" class="btn btn-primary">Ver um report de exemplo →</a>
+        <a href="#contato" class="btn btn-outline-white">Conversar sobre um projeto</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span class="scroll-label">scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ PROBLEMA ══ -->
+<section class="problema-wrap" id="problema" aria-labelledby="problema-hl">
+  <div class="problema-inner">
+    <h2 class="problema-headline reveal" id="problema-hl">
+      Dados de cliente existem em volume. O que falta é estrutura para&nbsp;usá-los.
+    </h2>
+    <div class="problema-grid">
+      <div class="problema-card reveal reveal-delay-1">
+        <div class="problema-num" aria-hidden="true">01</div>
+        <h3 class="problema-title">Volume sem classificação</h3>
+        <p class="problema-text">Reclame Aqui, Google Maps, NPS aberto, pesquisas de satisfação, reviews de app — dados qualitativos existem em abundância. Mas estão espalhados em fontes diferentes, em formatos diferentes, sem nenhuma estrutura que permita cruzar, comparar ou priorizar.</p>
+      </div>
+      <div class="problema-card reveal reveal-delay-2">
+        <div class="problema-num" aria-hidden="true">02</div>
+        <h3 class="problema-title">Pesquisa qualitativa não escala</h3>
+        <p class="problema-text">Entrevistas e workshops entregam profundidade, mas não volume. Quando o projeto precisa de centenas de interações reais para fundamentar decisões, a pesquisa tradicional leva meses — e o cenário muda antes do report ficar pronto.</p>
+      </div>
+      <div class="problema-card reveal reveal-delay-3">
+        <div class="problema-num" aria-hidden="true">03</div>
+        <h3 class="problema-title">Social listening não fala de jornada</h3>
+        <p class="problema-text">Ferramentas de monitoramento entregam sentimento e volume de menções. Não dizem em qual etapa da jornada o cliente desistiu, qual foi a causa, ou como isso se compara com o concorrente. São perguntas diferentes. Precisam de respostas diferentes.</p>
+      </div>
+      <div class="problema-card reveal reveal-delay-4">
+        <div class="problema-num" aria-hidden="true">04</div>
+        <h3 class="problema-title">Modelos de classificação genéricos</h3>
+        <p class="problema-text">Plataformas de mercado usam taxonomias fixas: sentimento positivo/negativo, tema amplo, canal. Não se adaptam ao contexto do negócio. Etapas de jornada de um e-commerce são diferentes de uma rede de assistência técnica. Classificação genérica produz diagnóstico genérico — e decisão errada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+
+<!-- ══ PARA QUEM ══ -->
+<section class="aud-wrap" id="para-quem" aria-labelledby="aud-hl">
+  <div class="aud-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Para quem</div>
+      <h2 class="section-headline" id="aud-hl">Para quem faz sentido</h2>
+    </div>
+    <div class="aud-grid">
+      <div class="aud-card reveal reveal-delay-1">
+        <div class="aud-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="aud-title">Times e consultorias de pesquisa e CX</h3>
+        <p class="aud-text">Vocês já sabem o que fazer com dados de jornada. O Customer Listening entrega centenas de interações reais classificadas em 32 dimensões — o volume e a estrutura que pesquisa qualitativa tradicional não consegue alcançar no mesmo prazo e custo.</p>
+      </div>
+      <div class="aud-card reveal reveal-delay-2">
+        <div class="aud-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26C17.81 13.47 19 11.38 19 9c0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 21h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="aud-title">Consultores e estúdios de design e inovação</h3>
+        <p class="aud-text">Projetos de discovery e inovação precisam de evidência real para fundamentar hipóteses. O Customer Listening traz a escala de dados que um time enxuto não consegue coletar e classificar sozinho — pronto para virar insight.</p>
+      </div>
+      <div class="aud-card reveal reveal-delay-3">
+        <div class="aud-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="12" width="4" height="9" rx="1" fill="currentColor" opacity=".35"/>
+            <rect x="10" y="7" width="4" height="14" rx="1" fill="currentColor" opacity=".65"/>
+            <rect x="17" y="3" width="4" height="18" rx="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3 class="aud-title">Marcas com presença em fontes públicas</h3>
+        <p class="aud-text">Se o seu Reclame Aqui tem centenas de reclamações e seu Google Maps por unidade conta a história real da operação, esses dados já têm o diagnóstico de jornada dentro deles. Falta transformar em conhecimento acionável.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ CASE ══ -->
+<section class="case-wrap" id="case" aria-labelledby="case-hl">
+  <div class="case-inner">
+    <div class="reveal">
+      <div class="case-eyebrow">Case</div>
+      <h2 class="case-hl" id="case-hl">Estudo sobre mercado de bicicletas elétricas no Brasil</h2>
+    </div>
+    <div class="case-grid">
+      <div class="reveal reveal-delay-1">
+        <p class="case-context">Diagnóstico de jornada de uma marca com benchmark contra cinco concorrentes diretos no mercado de bicicletas elétricas. Dados de Reclame Aqui e Google Maps: distribuição de dores por etapa, ranking de causas por categoria, linha do tempo de evolução e drill-down&nbsp;interativo.</p>
+        <div class="case-meta">
+          900+ reviews coletados<br>
+          6 marcas analisadas nas mesmas dimensões<br>
+          32 dimensões de classificação por registro<br>
+          5 semanas do briefing ao report final
+        </div>
+        <a href="./report.html" class="btn btn-secondary">Explorar o report →</a>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="case-preview">
+          <div class="preview-header">
+            <span class="preview-title">Customer Listening · Mercado de Bicicletas Elétricas</span>
+            <span class="preview-badge">Report</span>
+          </div>
+          <div class="preview-stats">
+            <div class="preview-stat">
+              <div class="preview-stat-num counter" data-target="900" data-suffix="+">0</div>
+              <div class="preview-stat-lbl">Reviews coletados</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-num counter" data-target="6">0</div>
+              <div class="preview-stat-lbl">Marcas analisadas</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-num counter" data-target="32">0</div>
+              <div class="preview-stat-lbl">Dimensões de classificação</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-num counter" data-target="5">0</div>
+              <div class="preview-stat-lbl">Semanas do briefing ao report</div>
+            </div>
+          </div>
+          <div class="preview-bars">
+            <div class="preview-bars-lbl">Distribuição por etapa de jornada</div>
+            <div class="bar-row">
+              <span class="bar-name">Pós-venda</span>
+              <div class="bar-track"><div class="bar-fill" data-width="68" style="background:var(--teal)"></div></div>
+              <span class="bar-val">38%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Pré-venda</span>
+              <div class="bar-track"><div class="bar-fill" data-width="43" style="background:var(--blue)"></div></div>
+              <span class="bar-val">24%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Suporte</span>
+              <div class="bar-track"><div class="bar-fill" data-width="39" style="background:var(--grape)"></div></div>
+              <span class="bar-val">22%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Compra</span>
+              <div class="bar-track"><div class="bar-fill" data-width="20" style="background:var(--yellow)"></div></div>
+              <span class="bar-val">11%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-name">Garantia</span>
+              <div class="bar-track"><div class="bar-fill" data-width="9" style="background:var(--silver)"></div></div>
+              <span class="bar-val">5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMO FUNCIONA ══ -->
+<section class="timeline-section" id="como-funciona" aria-labelledby="cf-hl">
+  <div class="timeline-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Processo</div>
+      <h2 class="section-headline" id="cf-hl">Como funciona</h2>
+      <p class="section-lead">Do dado bruto ao diagnóstico pronto para decisão.</p>
+    </div>
+    <div class="stepper reveal">
+      <div class="stepper-steps" role="tablist" aria-label="Etapas do processo">
+        <div class="stepper-track" aria-hidden="true"></div>
+        <button class="stepper-btn active" role="tab" aria-selected="true" aria-controls="step-panel-1" data-step="1">
+          <span class="stepper-num">1</span>
+          <span class="stepper-label">Briefing</span>
+        </button>
+        <button class="stepper-btn" role="tab" aria-selected="false" aria-controls="step-panel-2" data-step="2">
+          <span class="stepper-num">2</span>
+          <span class="stepper-label">Coleta</span>
+        </button>
+        <button class="stepper-btn" role="tab" aria-selected="false" aria-controls="step-panel-3" data-step="3">
+          <span class="stepper-num">3</span>
+          <span class="stepper-label">Classificação</span>
+        </button>
+        <button class="stepper-btn" role="tab" aria-selected="false" aria-controls="step-panel-4" data-step="4">
+          <span class="stepper-num">4</span>
+          <span class="stepper-label">Análise</span>
+        </button>
+        <button class="stepper-btn" role="tab" aria-selected="false" aria-controls="step-panel-5" data-step="5">
+          <span class="stepper-num">5</span>
+          <span class="stepper-label">Report</span>
+        </button>
+      </div>
+      <div class="stepper-panels">
+        <div class="stepper-panel active" id="step-panel-1" role="tabpanel">
+          <h3 class="stepper-title">Briefing</h3>
+          <p class="stepper-desc">Conversa sobre contexto: quais marcas, quais fontes fazem sentido para o segmento, quais etapas de jornada importam, se há fontes proprietárias para incluir. Define o escopo de classificação.</p>
+        </div>
+        <div class="stepper-panel" id="step-panel-2" role="tabpanel">
+          <h3 class="stepper-title">Coleta em escala</h3>
+          <p class="stepper-desc">Extração de fontes públicas relevantes — Reclame Aqui, Google Maps por unidade, redes sociais — e integração de fontes proprietárias quando disponíveis. Volume de centenas a milhares de registros por projeto.</p>
+        </div>
+        <div class="stepper-panel" id="step-panel-3" role="tabpanel">
+          <h3 class="stepper-title">Classificação</h3>
+          <p class="stepper-desc">Pipeline de classificação em três camadas, calibrado com exemplos reais do segmento. Antes de processar o volume completo, o modelo é ajustado com casos anotados e revisados manualmente.</p>
+          <div class="stepper-callout">
+            Um segundo modelo avalia cada classificação e sinaliza baixa confiança para revisão humana. Categorias de e-bike e de fintech não são intercambiáveis — tratar como se fossem produz dado errado.
+          </div>
+        </div>
+        <div class="stepper-panel" id="step-panel-4" role="tabpanel">
+          <h3 class="stepper-title">Análise</h3>
+          <p class="stepper-desc">Cruzamento das 32 dimensões para encontrar padrões: concentração de dores por etapa, causas dominantes, posicionamento frente a concorrentes, evolução temporal, temas emergentes.</p>
+        </div>
+        <div class="stepper-panel" id="step-panel-5" role="tabpanel">
+          <h3 class="stepper-title">Report</h3>
+          <p class="stepper-desc">Report interativo com navegação por jornada, drill-down por tema, benchmark e linha do tempo. Pode ser atualizado em ciclos regulares sem reiniciar o projeto do zero.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ══ DIFERENCIAIS ══ -->
+<section class="diff-section" id="diferenciais" aria-labelledby="diff-hl">
+  <div class="diff-section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Diferenciais</div>
+      <h2 class="section-headline" id="diff-hl">O que diferencia</h2>
+    </div>
+    <div class="diff-blocks-3">
+      <div class="diff-block reveal reveal-delay-1">
+        <h3 class="diff-block-title">Orientado à jornada, não ao volume</h3>
+        <p class="diff-block-text">Não entregamos contagem de menções. Entregamos distribuição por etapa de jornada, categoria de problema e causa raiz. A diferença entre saber que "há 1.200 reclamações este mês" e saber que "38% das dores estão no pós-venda, 60% causadas por falha logística no e-commerce."</p>
+      </div>
+      <div class="diff-block featured reveal reveal-delay-2">
+        <h3 class="diff-block-title">Calibrado para cada segmento — e aprende com os dados</h3>
+        <p class="diff-block-text">O pipeline é configurado com exemplos reais do mercado do projeto. Mas o modelo não se prende ao schema inicial: conforme mais dados são analisados, ele identifica categorias e causas raízes emergentes pela recorrência e volume — fricções que não estavam previstas aparecem no diagnóstico.</p>
+      </div>
+      <div class="diff-block reveal reveal-delay-3">
+        <h3 class="diff-block-title">Múltiplas fontes, mesma estrutura</h3>
+        <p class="diff-block-text">Reclame Aqui, Google Maps, redes sociais, fontes internas — tudo classificado nas mesmas 32 dimensões. O poder está no cruzamento: padrões que aparecem em uma fonte se confirmam (ou não) em outra.</p>
+      </div>
+    </div>
+    <div class="diff-blocks-2">
+      <div class="diff-block reveal reveal-delay-1">
+        <h3 class="diff-block-title">Mais rápido e mais barato que as alternativas</h3>
+        <p class="diff-block-text">Projeto fechado em 1 a 2 semanas. Sem contrato anual. Sem setup de plataforma. Custo definido antes de começar. O equivalente em pesquisa qualitativa levaria meses e custaria múltiplas vezes mais.</p>
+      </div>
+      <div class="diff-block reveal reveal-delay-2">
+        <h3 class="diff-block-title">Comparativo de mercado com dados reais</h3>
+        <p class="diff-block-text">Benchmark não baseado em percepção ou NPS genérico. Baseado nos mesmos dados, nas mesmas dimensões, no mesmo período. Comparação objetiva de performance de jornada entre marcas.</p>
+      </div>
+    </div>
+
+    <div class="comp-table-wrap reveal">
+      <div class="comp-table-label">Comparativo de abordagens</div>
+      <div class="comp-table" role="table" aria-label="Comparativo: Social Listening, Journey Management e nn Customer Listening">
+        <div class="comp-head" role="row">
+          <div class="comp-hcell" role="columnheader"></div>
+          <div class="comp-hcell" role="columnheader">Social Listening</div>
+          <div class="comp-hcell" role="columnheader">Journey Management</div>
+          <div class="comp-hcell" role="columnheader">nn Customer Listening</div>
+        </div>
+        <div class="comp-row" role="row">
+          <div class="comp-cell lbl" role="rowheader">Foco</div>
+          <div class="comp-cell" role="cell">Volume e sentimento</div>
+          <div class="comp-cell" role="cell">Organização visual</div>
+          <div class="comp-cell" role="cell">Diagnóstico de jornada</div>
+        </div>
+        <div class="comp-row" role="row">
+          <div class="comp-cell lbl" role="rowheader">Velocidade</div>
+          <div class="comp-cell" role="cell">Contínuo</div>
+          <div class="comp-cell" role="cell">Depende do time</div>
+          <div class="comp-cell" role="cell">1 a 2 semanas</div>
+        </div>
+        <div class="comp-row" role="row">
+          <div class="comp-cell lbl" role="rowheader">Custo</div>
+          <div class="comp-cell" role="cell">Assinatura anual em dólar</div>
+          <div class="comp-cell" role="cell">Ferramenta + time interno</div>
+          <div class="comp-cell" role="cell">Projeto fechado</div>
+        </div>
+        <div class="comp-row" role="row">
+          <div class="comp-cell lbl" role="rowheader">Adaptação ao segmento</div>
+          <div class="comp-cell" role="cell">Taxonomia genérica</div>
+          <div class="comp-cell" role="cell">Manual, depende do time</div>
+          <div class="comp-cell" role="cell">Calibrado por projeto</div>
+        </div>
+        <div class="comp-row" role="row">
+          <div class="comp-cell lbl" role="rowheader">Diagnóstico estruturado</div>
+          <div class="comp-cell" role="cell"><span class="nope">Não inclui</span></div>
+          <div class="comp-cell" role="cell"><span class="nope">Hipótese, não dado</span></div>
+          <div class="comp-cell" role="cell"><span class="check">✓</span> Com dado real</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ O QUE ENTREGAMOS ══ -->
+<section class="entrega-wrap" id="o-que-entregamos" aria-labelledby="entrega-hl">
+  <div class="entrega-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">O que entregamos</div>
+      <h2 class="section-headline" id="entrega-hl">De dado bruto a diagnóstico acionável</h2>
+      <p class="section-lead">O Customer Listening consolida centenas de dados não estruturados em um diagnóstico de jornada completo. É o ponto de partida pra mapa de jornada, service blueprint, priorização de roadmap ou decisão de produto.</p>
+    </div>
+    <div class="entrega-grid">
+      <div class="reveal reveal-delay-1">
+        <p class="entrega-list-label">O que está no report</p>
+        <ul class="feature-list" aria-label="Conteúdo do report">
+          <li class="feature-item">
+            <div class="feature-dot" aria-hidden="true"></div>
+            <div class="feature-body">
+              <div class="feature-title">Mapa de fricções por etapa de jornada</div>
+              <div class="feature-desc">Pré-venda, compra, pós-venda, suporte, garantia. Onde se concentram as dores, com que frequência e qual recorrência com outras categorias e causas raízes.</div>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-dot" aria-hidden="true"></div>
+            <div class="feature-body">
+              <div class="feature-title">Classificação em 32 dimensões</div>
+              <div class="feature-desc">Tipo de jornada, etapa, categoria de problema, causa raiz, canal, tema, produto, sentimento. Cada registro individual classificado e personalizável para cada contexto de negócio.</div>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-dot" aria-hidden="true"></div>
+            <div class="feature-body">
+              <div class="feature-title">Padrões de dor identificados</div>
+              <div class="feature-desc">Cruzamento entre etapas, causas e canais que revela onde os problemas são sistêmicos versus pontuais.</div>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-dot" aria-hidden="true"></div>
+            <div class="feature-body">
+              <div class="feature-title">Benchmark de mercado com dados reais</div>
+              <div class="feature-desc">Concorrentes analisados nas mesmas dimensões, na mesma base temporal. Comparativo objetivo.</div>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-dot" aria-hidden="true"></div>
+            <div class="feature-body">
+              <div class="feature-title">Linha do tempo</div>
+              <div class="feature-desc">Evolução dos problemas ao longo dos últimos 12 meses. O que melhorou, o que piorou, o que surgiu.</div>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-dot" aria-hidden="true"></div>
+            <div class="feature-body">
+              <div class="feature-title">Drill-down interativo</div>
+              <div class="feature-desc">Navegação por etapa, filtro por tema, acesso à reclamação real com contexto original.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <p class="diff-intro">Por que é diferente de fazer internamente</p>
+        <dl class="diff-list">
+          <div class="diff-list-item reveal">
+            <div class="diff-list-stat">1–2 sem.</div>
+            <div class="diff-list-body">
+              <dt class="diff-list-title">Mais rápido</dt>
+              <dd class="diff-list-desc">Do briefing ao report. Pesquisa qualitativa equivalente levaria 3+ meses.</dd>
+            </div>
+          </div>
+          <div class="diff-list-item reveal reveal-delay-1">
+            <div class="diff-list-stat">Fechado</div>
+            <div class="diff-list-body">
+              <dt class="diff-list-title">Mais barato</dt>
+              <dd class="diff-list-desc">Custo definido antes de começar. Sem assinatura anual, sem contrato em dólar.</dd>
+            </div>
+          </div>
+          <div class="diff-list-item reveal reveal-delay-2">
+            <div class="diff-list-stat">Escala</div>
+            <div class="diff-list-body">
+              <dt class="diff-list-title">Mais profundo</dt>
+              <dd class="diff-list-desc">Múltiplas fontes cruzadas nas mesmas dimensões. Volume que pesquisa manual não alcança.</dd>
+            </div>
+          </div>
+          <div class="diff-list-item reveal reveal-delay-3">
+            <div class="diff-list-stat">Pública + própria</div>
+            <div class="diff-list-body">
+              <dt class="diff-list-title">Múltiplas fontes</dt>
+              <dd class="diff-list-desc">NPS aberto, SAC, pesquisas internas. Qualquer dado qualitativo não estruturado.</dd>
+            </div>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVIÇOS ══ -->
+<section class="services-wrap" id="servicos" aria-labelledby="svc-hl">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="services-inner">
+    <div class="reveal">
+      <div class="services-eyebrow">Serviços</div>
+      <h2 class="services-hl" id="svc-hl">Três formatos de projeto</h2>
+      <p class="services-lead">Projeto pontual, cadência contínua ou análise de segmento — cada formato tem um contexto de uso&nbsp;diferente.</p>
+    </div>
+    <div class="svc-tabs" role="tablist" aria-label="Formatos de serviço">
+      <button class="svc-tab active" role="tab" aria-selected="true" aria-controls="panel-cl" data-panel="cl">Customer Listening</button>
+      <button class="svc-tab" role="tab" aria-selected="false" aria-controls="panel-ao" data-panel="ao">Always-On Listening</button>
+      <button class="svc-tab" role="tab" aria-selected="false" aria-controls="panel-ms" data-panel="ms">Market Signal</button>
+    </div>
+    <div class="svc-panels-wrap">
+      <!-- Customer Listening -->
+      <div class="svc-panel active" id="panel-cl" role="tabpanel" aria-labelledby="tab-cl">
+        <div class="svc-main">
+          <div class="svc-tag">Diagnóstico de jornada</div>
+          <h3 class="svc-name">Customer Listening</h3>
+          <p class="svc-sub">Projeto fechado</p>
+          <p class="svc-desc">Coleta + classificação + análise + report navegável. Funciona como diagnóstico inicial, baseline de jornada ou benchmark competitivo. O ponto de partida para gestão de jornadas com dado real.</p>
+          <p class="svc-desc">O report serve como input direto pra mapas de jornada, service blueprints e priorizações. Compatível com Smaply, TheyDo, Figma, Miro.</p>
+        </div>
+        <div class="svc-side">
+          <div class="svc-detail">
+            <div class="svc-detail-lbl">O que está incluído</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Coleta de fontes públicas e proprietárias</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Classificação em 32 dimensões</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Análise de padrões e causas raízes</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Report interativo navegável</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Benchmark de concorrentes</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Linha do tempo de evolução</div>
+          </div>
+          <div class="svc-detail">
+            <div class="svc-detail-lbl">Prazo</div>
+            <div class="svc-prazo">1 a 2 semanas</div>
+          </div>
+        </div>
+      </div>
+      <!-- Always-On -->
+      <div class="svc-panel" id="panel-ao" role="tabpanel" aria-labelledby="tab-ao">
+        <div class="svc-main">
+          <div class="svc-tag">Customer listening contínuo</div>
+          <h3 class="svc-name">Always-On Listening</h3>
+          <p class="svc-sub">Cadência mensal ou trimestral</p>
+          <p class="svc-desc">O mesmo pipeline rodando em cadência mensal ou trimestral. Reports periódicos com comparação ao ciclo anterior, benchmark atualizado e sinalização de temas emergentes.</p>
+          <p class="svc-desc">Para quem precisa acompanhar evolução de jornada ao longo do tempo sem reiniciar projeto a cada ciclo.</p>
+        </div>
+        <div class="svc-side">
+          <div class="svc-detail">
+            <div class="svc-detail-lbl">O que está incluído</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Coleta e classificação em ciclos regulares</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Comparação com ciclo anterior</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Sinalização de temas emergentes</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Benchmark atualizado por período</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Report consolidado por ciclo</div>
+          </div>
+          <div class="svc-detail">
+            <div class="svc-detail-lbl">Cadência</div>
+            <div class="svc-prazo">Mensal ou trimestral</div>
+          </div>
+        </div>
+      </div>
+      <!-- Market Signal -->
+      <div class="svc-panel" id="panel-ms" role="tabpanel" aria-labelledby="tab-ms">
+        <div class="svc-main">
+          <div class="svc-tag">Inteligência de segmento</div>
+          <h3 class="svc-name">Market Signal</h3>
+          <p class="svc-sub">Análise de mercado</p>
+          <p class="svc-desc">Todas as marcas relevantes de um segmento analisadas nas mesmas dimensões. Mapa de posicionamento por etapa de jornada, dores sistêmicas do setor e oportunidades de diferenciação.</p>
+          <p class="svc-desc">Comparativo de mercado completo com dados reais — para decisões estratégicas, posicionamento ou entrada em novos mercados.</p>
+        </div>
+        <div class="svc-side">
+          <div class="svc-detail">
+            <div class="svc-detail-lbl">O que está incluído</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Análise de todas as marcas do segmento</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Mapa de posicionamento por etapa</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Dores sistêmicas do setor</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Oportunidades de diferenciação</div>
+            <div class="svc-item"><span class="svc-check">✓</span> Benchmark completo de jornada</div>
+          </div>
+          <div class="svc-detail">
+            <div class="svc-detail-lbl">Entregável</div>
+            <div class="svc-prazo">Report interativo completo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fontes-block reveal">
+      <div class="fontes-label">Fontes proprietárias</div>
+      <h4 class="fontes-title">O pipeline aceita dados internos</h4>
+      <p class="fontes-text">Além de fontes públicas, o pipeline processa dados internos: NPS aberto, tickets de SAC, pesquisas de satisfação, comentários de app store. Qualquer dado qualitativo não estruturado entra no mesmo pipeline de classificação.</p>
+    </div>
+
+    <p class="svc-note">Entregável disponível em white-label. O report vai com a marca que fizer sentido para o projeto.</p>
+  </div>
+</section>
+
+
+<!-- ══ CTA FINAL ══ -->
+<section class="cta-wrap" id="contato" aria-labelledby="cta-hl">
+  <canvas id="cta-canvas" aria-hidden="true"></canvas>
+  <div class="hero-noise" aria-hidden="true"></div>
+  <div class="cta-inner reveal">
+    <p class="cta-eyebrow">Customer Listening · noises to notes</p>
+    <h2 class="cta-title" id="cta-hl">Tem um projeto que precisa de dados reais de&nbsp;jornada?</h2>
+    <p class="cta-sub">Conte o contexto. Avaliamos juntos se faz sentido e como seria o&nbsp;escopo.</p>
+    <div class="cta-actions">
+      <a href="mailto:contato@noisestonotes.com" class="btn btn-primary">Conversar sobre um projeto</a>
+      <a href="./report.html" class="btn btn-outline-white">Ver o report →</a>
+    </div>
+    <p class="cta-note">Projeto fechado · Sem assinatura · Fontes públicas e proprietárias</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="page-footer" aria-label="Rodapé">
+  <a href="#hero" class="footer-brand">
+    <div class="footer-logo-icon" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="500" height="500" rx="50" fill="#041F1E"/>
+        <path d="M88.659 332.751C86.753 332.751 84.2513 331.917 81.1541 330.249C78.2951 328.82 75.436 326.794 72.577 324.174C69.9563 321.315 68.0503 318.098 66.859 314.524C65.6678 310.951 65.906 307.139 67.5738 303.088L103.669 213.387C106.051 207.431 104.979 204.452 100.452 204.452C98.7846 204.452 96.283 204.572 92.9475 204.81C89.8502 205.048 86.3956 206.12 82.5836 208.026C78.7716 209.694 75.0787 212.672 71.5049 216.961C70.5519 218.152 69.1224 218.748 67.2164 218.748C65.3104 218.509 64.2383 217.318 64 215.174C64 213.506 64.7148 211.243 66.1443 208.384C67.812 205.525 69.718 202.666 71.8623 199.807C74.2448 196.709 76.2699 194.446 77.9377 193.016C83.6557 187.537 90.565 182.891 98.6655 179.079C106.766 175.028 116.415 173.003 127.613 173.003C133.569 173.003 138.096 174.552 141.193 177.649C144.529 180.747 146.554 184.678 147.269 189.443C147.983 193.969 147.388 198.734 145.482 203.738L126.541 250.554C125.826 252.222 126.422 253.175 128.328 253.413C130.472 253.651 132.021 253.056 132.974 251.626C141.551 236.616 150.009 223.274 158.347 211.6C166.686 199.687 175.263 190.277 184.079 183.367C193.132 176.458 202.662 173.003 212.669 173.003C221.96 173.003 228.631 175.624 232.682 180.866C236.97 186.107 239.234 192.54 239.472 200.164C239.71 207.55 238.281 214.697 235.183 221.607L208.38 284.862C205.283 292.248 205.759 295.941 209.81 295.941C211.239 295.941 213.264 295.226 215.885 293.797C218.506 292.367 221.246 290.699 224.105 288.793C226.964 286.649 229.584 284.624 231.967 282.718C234.588 280.574 236.494 278.906 237.685 277.715C238.876 276.523 240.068 275.332 241.259 274.141C242.688 272.95 243.76 272.354 244.475 272.354C245.19 272.354 245.905 272.831 246.619 273.784C247.572 274.498 248.049 275.451 248.049 276.643C248.049 281.408 246.5 285.696 243.403 289.508C236.255 297.847 228.274 305.352 219.459 312.023C210.882 318.456 201.947 323.578 192.656 327.39C183.364 330.964 174.548 332.751 166.21 332.751C163.112 332.751 159.896 331.679 156.561 329.534C153.463 327.628 151.081 325.246 149.413 322.387C147.983 319.528 147.864 316.55 149.056 313.452C156.918 296.06 165.018 278.906 173.357 261.99C181.696 244.836 189.201 227.325 195.872 209.456C197.54 205.167 198.135 201.951 197.659 199.807C197.182 197.424 195.634 196.233 193.013 196.233C189.916 196.233 186.461 198.139 182.649 201.951C179.075 205.763 175.263 210.528 171.213 216.246C167.163 221.964 162.993 227.92 158.705 234.115C156.561 236.974 153.582 241.501 149.77 247.695C145.958 253.651 141.789 260.322 137.262 267.708C132.735 275.094 128.209 282.599 123.682 290.223C119.393 297.609 115.581 304.161 112.246 309.879C108.434 316.311 104.622 321.791 100.81 326.318C96.9978 330.606 92.9475 332.751 88.659 332.751Z" fill="#F5F5F5"/>
+        <path d="M255.453 328.819C253.785 328.819 252.117 328.462 250.449 327.747C249.02 326.794 248.305 325.484 248.305 323.816C248.305 321.91 249.139 320.481 250.807 319.528C252.475 318.336 254.381 317.383 256.525 316.669C260.099 315.477 263.196 314.167 265.817 312.737C268.676 311.07 270.105 307.853 270.105 303.088V221.249C270.105 216.008 269.271 211.6 267.604 208.026C266.174 204.452 263.315 202.189 259.026 201.236C258.073 200.998 257.12 200.402 256.167 199.449C255.453 198.496 255.095 196.948 255.095 194.803C255.095 191.468 256.287 189.443 258.669 188.728C266.77 186.822 275.585 184.32 285.115 181.223C294.883 177.887 303.222 174.433 310.131 170.859C311.084 170.383 312.156 169.787 313.348 169.072C314.539 168.357 315.611 168 316.564 168C317.994 168 318.827 168.477 319.066 169.43C319.542 170.144 319.78 171.097 319.78 172.289C319.78 174.195 319.423 177.292 318.708 181.58C318.232 185.631 317.994 189.323 317.994 192.659C317.994 193.612 317.994 194.684 317.994 195.875C318.232 197.067 318.47 197.781 318.708 198.02C326.809 190.157 335.029 184.082 343.367 179.793C351.706 175.505 361.355 173.361 372.315 173.361C384.704 173.361 395.068 178.007 403.407 187.298C411.984 196.352 416.272 208.741 416.272 224.465V303.088C416.272 307.853 417.583 311.07 420.203 312.737C423.062 314.167 426.279 315.477 429.852 316.669C431.758 317.383 433.426 318.336 434.856 319.528C436.285 320.481 437 321.91 437 323.816C437 325.484 436.285 326.794 434.856 327.747C433.664 328.462 432.354 328.819 430.925 328.819C426.16 328.819 421.633 328.581 417.344 328.105C413.294 327.866 409.244 327.628 405.193 327.39C401.381 327.152 397.331 327.033 393.043 327.033C388.992 327.033 384.942 327.152 380.892 327.39C376.842 327.628 372.791 327.866 368.741 328.105C364.691 328.581 360.283 328.819 355.518 328.819C354.089 328.819 352.659 328.462 351.23 327.747C350.038 326.794 349.443 325.484 349.443 323.816C349.443 321.91 350.157 320.481 351.587 319.528C353.016 318.336 354.684 317.383 356.59 316.669C360.164 315.477 363.142 314.167 365.525 312.737C367.907 311.07 369.098 307.853 369.098 303.088V231.97C369.098 222.917 366.954 215.888 362.666 210.885C358.615 205.644 353.136 202.904 346.226 202.666C340.985 202.666 336.339 203.499 332.289 205.167C328.238 206.835 324.069 209.098 319.78 211.957C318.827 212.91 318.113 213.982 317.636 215.174C317.16 216.365 316.921 217.556 316.921 218.747V303.088C316.921 307.853 318.232 311.07 320.853 312.737C323.473 314.167 326.452 315.477 329.787 316.669C334.552 318.098 336.935 320.481 336.935 323.816C336.935 325.246 336.339 326.437 335.148 327.39C333.956 328.343 332.527 328.819 330.859 328.819C326.094 328.819 321.686 328.581 317.636 328.105C313.586 327.866 309.774 327.628 306.2 327.39C302.626 327.152 298.695 327.033 294.407 327.033C290.356 327.033 286.187 327.152 281.899 327.39C277.848 327.628 273.56 327.866 269.033 328.105C264.744 328.581 260.218 328.819 255.453 328.819Z" fill="#F5F5F5"/>
+      </svg>
+    </div>
+    <div>
+      <div class="footer-name">noises to notes</div>
+      <div class="footer-desc">Customer Listening · Inteligência de Jornada · Brasil</div>
+    </div>
+  </a>
+  <nav class="footer-links" aria-label="Links do rodapé">
+    <a href="#problema">Problema</a>
+    <a href="#como-funciona">Como funciona</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#case">Case</a>
+    <a href="mailto:contato@noisestonotes.com">Contato</a>
+  </nav>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ── Nav scroll ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('page-nav').classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  // ── Counter animation ──
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1200;
+    const start = performance.now();
+    function update(ts) {
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { animateCounter(e.target); counterObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+  // ── Bar fill animation ──
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.bar-fill').forEach(bar => { bar.style.width = bar.dataset.width + '%'; });
+        barObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.preview-bars').forEach(el => barObs.observe(el));
+
+  // ── Service tabs ──
+  document.querySelectorAll('.svc-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const panelId = 'panel-' + tab.dataset.panel;
+      document.querySelectorAll('.svc-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(panelId).classList.add('active');
+    });
+  });
+
+  // ── Process stepper ──
+  (function() {
+    var btns = document.querySelectorAll('.stepper-btn');
+    var panels = document.querySelectorAll('.stepper-panel');
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var step = btn.dataset.step;
+        btns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById('step-panel-' + step).classList.add('active');
+      });
+    });
+  })();
+
+  // ── Active nav on scroll ──
+  (function() {
+    const sectionIds = ['problema', 'case', 'como-funciona', 'servicos', 'contato'];
+    const links = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+
+    function update() {
+      const y = window.scrollY + 120;
+      let current = null;
+      sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= y) current = id;
+      });
+      links.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+
+  // ── Mobile hamburger ──
+  (function() {
+    var hamburger = document.getElementById('nav-hamburger');
+    var mobileNav = document.getElementById('nav-mobile');
+    if (!hamburger || !mobileNav) return;
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Abrir menu');
+      mobileNav.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden', 'true');
+    }
+
+    hamburger.addEventListener('click', function() {
+      var open = hamburger.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', open);
+      hamburger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      mobileNav.classList.toggle('open', open);
+      mobileNav.setAttribute('aria-hidden', !open);
+    });
+
+    mobileNav.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!mobileNav.contains(e.target) && !hamburger.contains(e.target)) closeMenu();
+    });
+  })();
+
+  // ── Wave canvas: noise → signal (hero + cta) ──
+  (function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    function pnoise(x, t, a, b, c) {
+      return Math.sin(x * a + t) * Math.sin(x * b + t * 0.72) * Math.sin(x * c + t * 1.38);
+    }
+    var waves = [
+      { f: 0.013, a: 28, ph: 0.0,  na: [0.09, 0.24, 0.047], al: 0.17, lw: 1.5 },
+      { f: 0.021, a: 20, ph: 1.1,  na: [0.13, 0.31, 0.063], al: 0.12, lw: 1.0 },
+      { f: 0.007, a: 34, ph: 2.3,  na: [0.07, 0.18, 0.038], al: 0.09, lw: 1.0 }
+    ];
+    var CF = 0.015, CA = 27;
+
+    function initWaveCanvas(id) {
+      var canvas = document.getElementById(id);
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var W = 0, H = 0, tick = Math.random() * 100, raf = null, visible = false;
+
+      function resize() {
+        W = canvas.width = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+
+      function drawFrame() {
+        if (!visible) { raf = null; return; }
+        ctx.clearRect(0, 0, W, H);
+        var mid = H * 0.5;
+        waves.forEach(function(w, idx) {
+          ctx.beginPath();
+          for (var xi = 0; xi <= W; xi += 2) {
+            var p = xi / W;
+            var cf = Math.max(0, Math.min(1, (p - 0.40) / 0.30));
+            cf = cf * cf * (3 - 2 * cf);
+            var noisy = Math.sin(xi * w.f + w.ph + tick * (1 + idx * 0.17)) * w.a
+                      + pnoise(xi, tick, w.na[0], w.na[1], w.na[2]) * w.a * 0.62;
+            var clean = Math.sin(xi * CF + w.ph * 0.22 + tick) * CA;
+            var yi = mid + noisy * (1 - cf) + clean * cf;
+            if (xi === 0) ctx.moveTo(xi, yi); else ctx.lineTo(xi, yi);
+          }
+          ctx.strokeStyle = 'rgba(29,158,117,' + w.al + ')';
+          ctx.lineWidth = w.lw;
+          ctx.stroke();
+        });
+        ctx.beginPath();
+        var sx = W * 0.68;
+        for (var xi = sx; xi <= W; xi += 2) {
+          var yi = mid + Math.sin(xi * CF + tick) * CA;
+          if (Math.abs(xi - sx) < 2) ctx.moveTo(xi, yi); else ctx.lineTo(xi, yi);
+        }
+        ctx.strokeStyle = 'rgba(29,158,117,0.44)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        tick += 0.011;
+        raf = requestAnimationFrame(drawFrame);
+      }
+
+      resize();
+      if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas);
+      else window.addEventListener('resize', resize, { passive: true });
+
+      new IntersectionObserver(function(entries) {
+        visible = entries[0].isIntersecting;
+        if (visible && !raf) raf = requestAnimationFrame(drawFrame);
+      }, { threshold: 0 }).observe(canvas);
+
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) { cancelAnimationFrame(raf); raf = null; }
+        else if (visible && !raf) raf = requestAnimationFrame(drawFrame);
+      });
+    }
+
+    initWaveCanvas('hero-canvas');
+    initWaveCanvas('cta-canvas');
+  })();
+</script>
+</body>
+</html>
