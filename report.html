@@ -148,6 +148,31 @@ Error generating stack: `+v.message+`
 </head>
   <body>
     <div id="root"></div>
-
+  <script>
+    (function () {
+      function patchLogo() {
+        var ps = document.querySelectorAll('p');
+        for (var i = 0; i < ps.length; i++) {
+          if (ps[i].textContent.trim() === 'noise to notes') {
+            var wrap = ps[i].closest('.flex.items-center');
+            if (wrap && !wrap.closest('a')) {
+              var a = document.createElement('a');
+              a.href = './index.html';
+              a.style.cssText = 'text-decoration:none;display:flex;align-items:center;gap:10px;padding-top:4px;';
+              wrap.parentNode.insertBefore(a, wrap);
+              a.appendChild(wrap);
+              return;
+            }
+          }
+        }
+        setTimeout(patchLogo, 80);
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(patchLogo, 80); });
+      } else {
+        setTimeout(patchLogo, 80);
+      }
+    })();
+  </script>
   </body>
 </html>
